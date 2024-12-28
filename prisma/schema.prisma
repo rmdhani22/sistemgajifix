@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model barang {
+  id_bar         Int              @id @default(autoincrement())
+  jenis_bar      String           @db.VarChar(15)
+  produksiharian produksiharian[]
+  produksipabrik produksipabrik[]
+}
+
+model gaji {
+  id_gaji               Int            @id @default(autoincrement())
+  total_upah            Float
+  tanggal               DateTime
+  upah_id_upah          Int?
+  produksi_harian_id_ph Int
+  hargaupah             Float
+  produksiharian        produksiharian @relation(fields: [produksi_harian_id_ph], references: [id_ph], map: "Gaji_produksi_harian_id_ph_fkey")
+  upah                  upah?          @relation(fields: [upah_id_upah], references: [id_upah], map: "Gaji_upah_id_upah_fkey")
+
+  @@index([produksi_harian_id_ph], map: "Gaji_produksi_harian_id_ph_fkey")
+  @@index([upah_id_upah], map: "Gaji_upah_id_upah_fkey")
+}
+
+model karyawan {
+  id_karyawan      Int              @id @default(autoincrement())
+  nama_karyawan    String           @db.VarChar(50)
+  alamat_karyawan  String           @db.VarChar(15)
+  pabrik_id_pabrik Int
+  pabrik           pabrik           @relation(fields: [pabrik_id_pabrik], references: [id_pabrik], map: "Karyawan_pabrik_id_pabrik_fkey")
+  produksiharian   produksiharian[]
+
+  @@index([pabrik_id_pabrik], map: "Karyawan_pabrik_id_pabrik_fkey")
+}
+
+model laporan {
+  id_laporan            Int            @id @default(autoincrement())
+  jenis_laporan         String         @db.VarChar(15)
+  tanggal               DateTime
+  produksi_pabrik_id_pp Int
+  produksi_harian_id_ph Int
+  produksiharian        produksiharian @relation(fields: [produksi_harian_id_ph], references: [id_ph], map: "Laporan_produksi_harian_id_ph_fkey")
+  produksipabrik        produksipabrik @relation(fields: [produksi_pabrik_id_pp], references: [id_pp], map: "Laporan_produksi_pabrik_id_pp_fkey")
+
+  @@index([produksi_harian_id_ph], map: "Laporan_produksi_harian_id_ph_fkey")
+  @@index([produksi_pabrik_id_pp], map: "Laporan_produksi_pabrik_id_pp_fkey")
+}
+
+model pabrik {
+  id_pabrik      Int              @id @default(autoincrement())
+  nama_pabrik    String           @map("nama-pabrik") @db.VarChar(10)
+  alamat_pabrik  String           @db.VarChar(15)
+  karyawan       karyawan[]
+  produksiharian produksiharian[]
+  produksipabrik produksipabrik[]
+}
+
+model produksiharian {
+  id_ph           Int       @id @default(autoincrement())
+  hasil_prod      Float
+  tanggal         DateTime
+  ukuran_bar_har  String    @map("ukuran_bar-har")
+  karyawan_id_kar Int
+  barang_id_bar   Int
+  pabrik_id       Int
+  gaji            gaji[]
+  laporan         laporan[]
+  barang          barang    @relation(fields: [barang_id_bar], references: [id_bar], map: "ProduksiHarian_barang_id_bar_fkey")
+  karyawan        karyawan  @relation(fields: [karyawan_id_kar], references: [id_karyawan], map: "ProduksiHarian_karyawan_id_kar_fkey")
+  pabrik          pabrik    @relation(fields: [pabrik_id], references: [id_pabrik], map: "ProduksiHarian_pabrik_id_fkey")
+
+  @@index([barang_id_bar], map: "ProduksiHarian_barang_id_bar_fkey")
+  @@index([karyawan_id_kar], map: "ProduksiHarian_karyawan_id_kar_fkey")
+  @@index([pabrik_id], map: "ProduksiHarian_pabrik_id_fkey")
+}
+
+model produksipabrik {
+  id_pp            Int       @id @default(autoincrement())
+  target_pab       Float
+  tanggal          DateTime
+  ukuran_bar_pab   String    @map("ukuran_bar-pab") @db.VarChar(10)
+  pabrik_id_pabrik Int
+  barang_id_bar    Int
+  laporan          laporan[]
+  barang           barang    @relation(fields: [barang_id_bar], references: [id_bar], map: "ProduksiPabrik_barang_id_bar_fkey")
+  pabrik           pabrik    @relation(fields: [pabrik_id_pabrik], references: [id_pabrik], map: "ProduksiPabrik_pabrik_id_pabrik_fkey")
+
+  @@index([barang_id_bar], map: "ProduksiPabrik_barang_id_bar_fkey")
+  @@index([pabrik_id_pabrik], map: "ProduksiPabrik_pabrik_id_pabrik_fkey")
+}
+
+model upah {
+  id_upah    Int    @id @default(autoincrement())
+  harga_upah Float
+  gaji       gaji[]
+}
+
+model user {
+  id       Int       @id @default(autoincrement())
+  username String    @unique(map: "User_username_key")
+  password String
+  role     user_role
+}
+
+enum user_role {
+  ADMIN
+  KEPALA_GUDANG
+  OWNER
+}

@@ -2,20 +2,803 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* --- Gaya Umum --- */
+html, body {
+  @apply bg-[#EAD8C0]; /* Background color */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #74512D; /* Title color */
+}
+
+/* --- Gaya Layout Dasar --- */
+.layout {
+  display: flex;
+  padding: 20px;
+}
+
+.sidebar {
+  position: relative;
+  width: 300px;
+  background-color: #AF8F6F; /* Sidebar background color */
+  color: white;
+  padding: 20px;
+  z-index: 40;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.content {
+  flex-grow: 1;
+  background-color: #D1BB9E; /* Content area background color */
+  padding: 20px;
+  margin-left: 20px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f8f4e1; /* Navbar background color */
+  padding: 10px 20px;
+}
+
+/* --- Gaya Form untuk Data Karyawan --- */
+.input-form,
+.form-container {
+  max-width: 950px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ae7e4d; /* Form background color */
+  border: 1px solid #ae7e4d;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.input-form h3,
+.form-container h3 {
+  margin-bottom: 15px;
+  color: #74512D; /* Form title color */
+}
+
+.input-form div,
+.form-container div {
+  margin-bottom: 10px;
+}
+
+.input-form label,
+.form-container label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-form input,
+.form-container input,
+.filter-container input,
+.search-container input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border: 1px solid #ae7e4d;
+  border-radius: 4px;
+}
+
+input:focus {
+  border-color: #ae7e4d; /* Focus border color */
+  outline: none;
+  box-shadow: 0 0 4px rgba(74, 144, 226, 0.4);
+}
+
+/* --- Gaya Tombol Umum --- */
+.add-btn,
+.save-btn,
+.btn-add,
+.btn-filter,
+.btn-edit,
+.btn-delete {
+  padding: 10px 20px;
+  border: 1px solid #543310; /* Button border color */
+  border-radius: 5px;
+  cursor: pointer;
+  color: #74512D; /* Button text color */
+  font-size: 14px;
+}
+
+.add-btn,
+.save-btn {
+  background-color: #543310; /* Button background color */
+}
+
+.btn-add:hover,
+.add-btn:hover {
+  background-color: #EAD8C0 ; /* Hover color for add button */
+}
+
+.btn-filter {
+  background-color: #74512D; /* Filter button background color */
+}
+
+.btn-edit {
+  background-color: #AF8F6F; /* Edit button background color */
+}
+
+.btn-edit:hover {
+  background-color: #f8f4e1; /* Hover color for edit button */
+}
+
+.btn-delete {
+  background-color: #f8f4e1; /* Delete button background color */
+}
+
+.btn-delete:hover {
+  background-color: #543310; /* Hover color for delete button */
+}
+
+/* --- Gaya Pencarian & Filter --- */
+.search-container,
+.filter-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+/* --- Gaya Tabel Data --- */
+.data-table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.data-table thead {
+  background-color: #74512D; /* Ubah warna background header tabel */
+  color: white;
+  font-weight: bold;
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.data-table tbody tr:nth-child(even) {
+  background-color: #EAD8C0; /* Even row background color */
+}
+
+.data-table tbody tr:hover {
+  background-color: #EAD8C0; /* Hover row background color */
+}
+
+.data-table td {
+  text-align: center;
+}
+
+.data-table td[colspan] {
+  text-align: center;
+  color: #888;
+}
+
+.data-karyawan-container {
+  padding: 20px;
+  background-color: rgba(249, 249, 249, 0.5);
+}
+
+/* --- Gaya Kontainer Pencarian --- */
+.search-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.search-container input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* --- Gaya Tabel Data Jenis Barang dan Harga --- */
+.data-table {
+  width: 80%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.data-table thead {
+  background-color: #74512D; /* Table header background color */
+  color: white;
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.data-table tbody tr:nth-child(even) {
+  background-color: #EAD8C0; /* Even row background color */
+}
+
+.data-table tbody tr:hover {
+  background-color: #EAD8C0; /* Hover row background color */
+}
+
+.data-table td {
+  text-align: center;
+}
+
+.data-table td[colspan] {
+  text-align: center;
+  color: #888;
+}
+
+.data-table button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #f8f4e1;
+}
+
+.data-table button:hover {
+  color: #ae7e4d;
+}
+
+/* --- Gaya Tombol Kolom --- */
+.column-button {
+  display: block;
+  width: 50%;
+  padding: 10px;
+  margin: 10px auto 20px 20px;
+  background-color: #f8f4e1;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.column-button:hover {
+  background-color: #ae7e4d;
+}
+
+/* --- Gaya Tombol Kustom --- */
+.add-btn-custom {
+  background-color: #f8f4e1;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* --- Gaya Tombol Bersama --- */
+.button-shared {
+  background-color: #f8f4e1;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.button-shared:hover {
+  background-color: #f8f4e1;
+}
+
+/* --- Gaya Umum untuk Body --- */
+body {
+  background-color: #f4f4f4;
+  font-family: Arial, sans-serif;
+}
+
+/* --- Gaya Umum untuk Elemen Lain --- */
+.max-w-md {
+  max-width: 400px;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-gray-800 {
+  color: #2d3748;
+}
+
+.bg-white {
+  background-color: #ffffff;
+}
+
+.p-6 {
+  padding: 1.5rem;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.text-red-500 {
+  color: #ae7e4d;
+}
+
+.text-green-500 {
+  color: #74512d;
+}
+
+.block {
+  display: block;
+}
+
+.text-gray-700 {
+  color: #4a5568;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.border {
+  border: 1px solid #e2e8f0;
+}
+
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
+.focus\:outline-teal-500:focus {
+  outline-color: #74512d;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.bg-teal-500 {
+  background-color: #74512d;
+}
+
+.hover\:bg-teal-600:hover {
+  background-color: #74512d;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+/* --- Gaya Dialog --- */
+.logout-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #D1BB9E; /* Logout container background color */
+}
+
+.dialog {
+  background-color: #EAD8C0; /* Dialog background color */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.yes-button, .no-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+}
+
+.yes-button {
+  background-color: #543310; /* Yes button background color */
+}
+
+.no-button {
+  background-color:#74512d; /* No button background color */
+}
+
+.print-button {
+  margin-left: 870px;
+  padding: 10px 15px;
+  background-color: #74512D; /* Print button background color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.print-button:hover {
+  background-color: #543310; /* Hover color for print button */
+}
+
+.laporan-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.menu {
+  margin-bottom: 20px;
+}
+
+.dropdown,
+.input-field {
+  padding: 8px;
+  width: 100%;
+  margin-top: 5px;
+  font-size: 16px;
+}
+
+.tampilkan-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #74512d; /* Tampilkan button background color */
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.tampilkan-button:hover {
+  background-color: #b59a75; /* Hover color for tampilkan button */
+}
+
+.laporan-content {
+  margin-top: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.print-button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.print-button {
+  padding: 10px 15px;
+  background-color: #74512D; /* Print button background color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.print-button:hover {
+  background-color: #543310; /* Hover color for print button */
+}
+
+/* Aturan untuk media cetak */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .data-table, .data-table * {
+    visibility: visible;
+  }
+
+  .data-table {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .laporan-content h1
+  .laporan-content h2,
+  .laporan-content p {
+    margin: 0;
+    padding: 0;
+  }
+
+  .laporan-content, .laporan-content * {
+    visibility: visible;
+  }
+
+  .laporan-content {
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 }
 
-body {
+.tooltip {
+  position: absolute;
+  left: 85%;
+  top: 50%;
+  transform: translateY(-50%) translateX(0);
+  padding: 5px 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #b59a75;
+  font-size: 12px;
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.group:hover .tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(8px);
+}
+
+/* Overlay untuk modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: bg-overlay;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal {
+  background-color: #EAD8C0; /* Modal background color */
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button-shared {
+  padding: 10px 15px;
+  background-color: #74512d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button-cancel {
+  padding: 10px 15px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.modal button {
+  padding: 10px 15px;
+  background-color: #543310; /* Modal button background color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  opacity: 0.9;
+}
+
+.login {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #e0f7f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-image: url('/kayu palet.webp');
+  background-size: cover;
+  background-position: center;
 }
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1px;
+  width: 400px;
+}
+
+.login-form {
+  padding: 40px;
+  max-width: 300px;
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.avatar img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+
+
+.input-group {
+  position: relative;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.input-group .icon, .input-group .icon-eye {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 10px;
+  font-size: 18px;
+}
+
+.input-group .icon-eye {
+  right: 10px;
+  left: auto;
+  cursor: pointer;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button-login {
+  width: 100%;
+  padding: 10px;
+  background-color: #8b5e3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.button-login:hover {
+  background-color: #6f4b2e;
+}
+
+.footer-links {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.footer-links a {
+  color: #8b5e3c;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.button-ubah-password {
+  width: 100%;
+  padding: 12px;
+  background-color: #543310;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-ubah-password:hover {
+  background-color: #b59a75;
+} 
